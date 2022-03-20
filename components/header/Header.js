@@ -12,6 +12,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 
@@ -46,12 +47,18 @@ const ResponsiveAppBar = () => {
   };
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElAbbook, setAnchorElAbbook] = React.useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
+  };
+  const handleOpenAbbookMenu = (event) => {
+    if (anchorElAbbook !== event.currentTarget) {
+      setAnchorElAbbook(event.currentTarget);
+    }
   };
 
   const handleCloseNavMenu = () => {
@@ -61,9 +68,12 @@ const ResponsiveAppBar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  const handleCloseAbbookMenu = () => {
+    setAnchorElAbbook(null);
+  };
 
   return (
-    <AppBar position="static" sx={styles.appBar}>
+    <AppBar position="static" sx={styles.appBar} elevation={0}>
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{
           display: 'flex'
@@ -71,13 +81,27 @@ const ResponsiveAppBar = () => {
           <Link href="#" sx={styles.siteLogo}>
             <img src="../images/static/site_logo.png" alt="logo" />
           </Link>
-
-
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', }}>
             <Box
               component="div" sx={styles.headerMenu}>
                <Link href="#" underline="none">Intro</Link>
-               <Link href="#" underline="none">About Brand Book</Link>
+               <Link href="#" underline="none"
+               aria-owns={anchorElAbbook ? "simple-menu" : undefined}
+               aria-haspopup="true"
+               onClick={handleOpenAbbookMenu}
+               onMouseOver={handleOpenAbbookMenu}
+               >About Brand Book <KeyboardArrowDownIcon/></Link>
+               <Menu
+        id="simple-menu"
+        anchorEl={anchorElAbbook}
+        open={Boolean(anchorElAbbook)}
+        onClose={handleCloseAbbookMenu}
+        MenuListProps={{ onMouseLeave: handleCloseAbbookMenu }}
+      >
+        <MenuItem onClick={handleCloseAbbookMenu}>Profile</MenuItem>
+        <MenuItem onClick={handleCloseAbbookMenu}>My account</MenuItem>
+        <MenuItem onClick={handleCloseAbbookMenu}>Logout</MenuItem>
+      </Menu>
                <Link href="#" underline="none">FAQs</Link>
                <Link href="#" underline="none">Glssary</Link>
             </Box>
